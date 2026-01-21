@@ -33,9 +33,66 @@ Tests failing (<N> failures). Must fix before completing:
 Cannot proceed with merge/PR until tests pass.
 ```
 
-Stop. Don't proceed to Step 2.
+Stop. Don't proceed to Step 1b.
 
-**If tests pass:** Continue to Step 2.
+**If tests pass:** Continue to Step 1b.
+
+### Step 1b: Run Cross-File Analysis
+
+**REQUIRED:** Use superpowers:cross-file-dry-analysis before merge.
+
+```
+[Dispatch superpowers:cross-file-dry-analysis subagent]
+  BASE_BRANCH: origin/main (or detected base)
+  FEATURE_DESCRIPTION: [what was implemented]
+  KEY_FILES: [main files changed]
+```
+
+**Review the analysis report:**
+- **Critical DRY violations:** Must fix before merge
+- **Important violations:** Should fix before merge
+- **Dead code:** Remove before merge
+
+**If violations found:**
+```
+Cross-file analysis found issues that need fixing:
+
+[List Critical and Important issues]
+
+Fixing these before presenting merge options.
+```
+
+Fix issues, commit, then re-run analysis until clean.
+
+**If clean:** Continue to Step 1c.
+
+### Step 1c: Run Standards Check
+
+**REQUIRED:** Use superpowers:standards-aware-review for compliance.
+
+```
+[Dispatch superpowers:standards-aware-review subagent]
+  BASE_SHA: [merge-base with main]
+  HEAD_SHA: [current HEAD]
+  DESCRIPTION: [feature summary]
+```
+
+**Review the standards report:**
+- **Critical violations:** Must fix before merge
+- **Important violations:** Should fix before merge
+
+**If violations found:**
+```
+Standards review found compliance issues:
+
+[List violations with standard citations]
+
+Fixing these before presenting merge options.
+```
+
+Fix issues, commit, then re-run check until compliant.
+
+**If compliant:** Continue to Step 2.
 
 ### Step 2: Determine Base Branch
 

@@ -20,6 +20,33 @@ Start by understanding the current project context, then ask questions one at a 
 - Only one question per message - if a topic needs more exploration, break it into multiple questions
 - Focus on understanding: purpose, constraints, success criteria
 
+**Before exploring approaches - Read Project Standards:**
+
+1. **Find standards documentation:**
+   ```bash
+   find . -name "*standard*.md" -o -name "CLAUDE.md" 2>/dev/null
+   ls docs/*.md 2>/dev/null
+   ```
+
+2. **Read and note constraints from:**
+   - `docs/architecture-standard.md` - Layer boundaries, allowed dependencies
+   - `docs/coding-standard.md` - Size limits, naming conventions
+   - `docs/security-standard.md` - Data handling, broadcast security
+   - `CLAUDE.md` - Project-specific instructions
+
+3. **Apply standards to design options:**
+   - Reject approaches that violate architecture boundaries
+   - Note security constraints that affect design choices
+   - Consider coding standards when estimating complexity
+   - Flag if an approach requires a standards exception
+
+4. **Mention constraints when presenting options:**
+   ```
+   "Option A aligns with our architecture standard's layer separation.
+   Option B would require an exception to the security standard's
+   data minimization rule. Which trade-off makes sense here?"
+   ```
+
 **Exploring approaches:**
 - Propose 2-3 different approaches with trade-offs
 - Present options conversationally with your recommendation and reasoning

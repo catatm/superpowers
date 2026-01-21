@@ -1,5 +1,113 @@
 # Superpowers Release Notes
 
+## v4.1.0 (2026-01-21)
+
+### New Skills - Quality Assurance
+
+Three new skills that catch issues task-scoped reviews miss:
+
+**standards-aware-review**
+- Reviews code against project-specific standards (architecture, coding, security)
+- Reads `docs/*-standard.md` and `CLAUDE.md` before reviewing
+- Cites violations with specific standard section references
+- Files: `skills/standards-aware-review/SKILL.md`, `standards-reviewer-prompt.md`
+
+**cross-file-dry-analysis**
+- Scans entire codebase for DRY violations and duplicated patterns
+- Detects dead code (unused exports, shadowed variables)
+- Finds patterns that should be in shared/ but are duplicated
+- Files: `skills/cross-file-dry-analysis/SKILL.md`, `dry-analyzer-prompt.md`
+
+**static-analysis**
+- Runs project's linters and type checkers (ESLint, TypeScript, etc.)
+- Catches dead code, type errors, and shadowed variables automatically
+- Provides commands for TypeScript, JavaScript, Python, and Rust projects
+- Files: `skills/static-analysis/SKILL.md`
+
+### Enhanced Skills
+
+**brainstorming** - Now reads project standards before exploring approaches
+- Added "Before exploring approaches - Read Project Standards" section
+- Agent finds and reads `docs/*-standard.md` files before proposing designs
+- Rejects approaches that violate documented standards
+- Mentions constraints when presenting options
+
+**writing-plans** - Now searches for existing patterns before planning
+- Added "DRY Analysis Before Planning" section
+- Agent searches `shared/`, `utils/`, `primitives/` for existing implementations
+- Plans include "Reuse Analysis" section documenting patterns found
+- Task templates include "Existing Patterns to Check" and "Reuse from" fields
+
+**code-quality-reviewer-prompt** - Enhanced review checklist
+- Added Project Standards Check (reads docs first)
+- Added Dead Code Detection (unused variables, imports)
+- Added DRY Violations check (searches codebase for duplicates)
+- Added Size Violations check (function/file LOC limits)
+- Added Shadowed Variables detection
+- Updated output format includes Standards Compliance section
+
+**finishing-a-development-branch** - Added mandatory quality gates
+- Added Step 1b: Run Cross-File Analysis (REQUIRED)
+- Added Step 1c: Run Standards Check (REQUIRED)
+- Must fix violations before presenting merge options
+- Workflow: Tests → DRY Analysis → Standards Check → Options
+
+### Workflow Changes
+
+**Before (issues slipped through):**
+```
+Brainstorm → Plan → Implement → Task Review → Finish
+                                     ↓
+                             (generic checklist,
+                              task-scoped only)
+```
+
+**After (issues caught):**
+```
+Brainstorm ────────→ Plan ─────────→ Implement ──→ Task Review ──→ Finish
+    ↓                  ↓                              ↓              ↓
+Read standards    Search for           Static analysis    Cross-file DRY
+Apply to design   existing patterns    Dead code check    Standards check
+                  Plan reuse           Standards check    Final compliance
+```
+
+### Documentation
+
+**README.md updates:**
+- Updated "The Basic Workflow" section with enhanced steps
+- Added "Enhanced Quality Gates" diagram
+- Added new "Quality Assurance" category to Skills Library
+- Added "Workflow Verification Checklist" for reviewing implementation logs
+
+### Files Changed
+
+| File | Action |
+|------|--------|
+| `skills/standards-aware-review/SKILL.md` | CREATE |
+| `skills/standards-aware-review/standards-reviewer-prompt.md` | CREATE |
+| `skills/cross-file-dry-analysis/SKILL.md` | CREATE |
+| `skills/cross-file-dry-analysis/dry-analyzer-prompt.md` | CREATE |
+| `skills/static-analysis/SKILL.md` | CREATE |
+| `skills/subagent-driven-development/code-quality-reviewer-prompt.md` | MODIFY |
+| `skills/writing-plans/SKILL.md` | MODIFY |
+| `skills/brainstorming/SKILL.md` | MODIFY |
+| `skills/finishing-a-development-branch/SKILL.md` | MODIFY |
+| `README.md` | MODIFY |
+| `RELEASE-NOTES.md` | MODIFY |
+
+### Verification
+
+To verify the enhanced workflow is working, check implementation logs for:
+
+1. **Brainstorming**: Agent reads standards before proposing approaches
+2. **Planning**: Plan includes "Reuse Analysis" section
+3. **Code Review**: Reviewer checks for dead code and DRY violations
+4. **Finishing**: Agent runs cross-file-dry-analysis and standards-aware-review before merge options
+
+See README.md "Workflow Verification Checklist" for detailed checklist.
+
+---
+
 ## v4.0.3 (2025-12-26)
 
 ### Improvements

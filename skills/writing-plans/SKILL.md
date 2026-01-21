@@ -26,6 +26,72 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 - "Run the tests and make sure they pass" - step
 - "Commit" - step
 
+## DRY Analysis Before Planning
+
+**REQUIRED:** Before writing any implementation plan, search for existing patterns.
+
+### Search for Existing Patterns
+
+```bash
+# Check shared directories for existing implementations
+ls src/shared/ src/utils/ src/primitives/ src/lib/ 2>/dev/null
+
+# Search for similar functionality
+grep -rn "[key-feature-term]" src/
+
+# Find existing patterns that might be reusable
+grep -rn "export.*function\|export.*const" src/shared/ src/utils/
+```
+
+### Document Reuse Opportunities
+
+In the plan header, add a **Reuse Analysis** section:
+
+```markdown
+## Reuse Analysis
+
+**Existing patterns found:**
+- `shared/formatters.ts:formatDate()` - Use for timestamp display
+- `shared/patterns.ts:URL_REGEX` - Use instead of defining new regex
+- `utils/api.ts:fetchWithRetry()` - Use for API calls
+
+**Patterns to extract after implementation:**
+- If [pattern] is used in multiple tasks, extract to shared/
+```
+
+### Plan Task Template (Enhanced)
+
+Each task should now include:
+
+```markdown
+### Task N: [Component Name]
+
+**Existing Patterns to Check:**
+- [ ] Search `shared/` for similar functionality
+- [ ] Check `utils/` for helper functions
+- [ ] Verify no existing implementation in other modules
+
+**Reuse from:**
+- `shared/X.ts:functionName` for [purpose]
+
+**Files:**
+- Create: `exact/path/to/file.ts`
+...
+```
+
+### Anti-Patterns to Avoid
+
+**Never plan to:**
+- Create a new utility without checking if one exists
+- Define constants already in `shared/constants.ts`
+- Implement helpers already in `utils/`
+- Duplicate regex patterns
+
+**Always plan to:**
+- Search before implementing
+- Note reuse opportunities in plan header
+- Add "Extract to shared" task if pattern used 2+ times
+
 ## Plan Document Header
 
 **Every plan MUST start with this header:**
