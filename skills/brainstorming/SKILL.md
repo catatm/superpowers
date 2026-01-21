@@ -47,9 +47,28 @@ Start by understanding the current project context, then ask questions one at a 
    data minimization rule. Which trade-off makes sense here?"
    ```
 
+**Parallel Codebase Exploration:**
+
+After reading standards and before proposing approaches, dispatch 4 parallel Explore agents:
+
+1. **Pattern Finder:** Search for similar existing patterns
+2. **Architecture Mapper:** Map integration points for this feature
+3. **Test Pattern Scout:** Discover testing conventions
+4. **Prior Art Researcher:** Find prior implementations or TODOs
+
+Use prompts from: `references/explorer-prompts.md`
+
+**Synthesis checkpoint:**
+- Consolidate findings from all explorations
+- Identify patterns that MUST be followed
+- Note testing requirements discovered
+- Flag any prior art or existing TODOs
+- Use insights to ground the 2-3 approaches in codebase reality
+
 **Exploring approaches:**
-- Propose 2-3 different approaches with trade-offs
-- Present options conversationally with your recommendation and reasoning
+- Using insights from parallel exploration, propose 2-3 approaches
+- Ground each option in patterns and constraints discovered
+- Present options conversationally with your recommendation
 - Lead with your recommended option and explain why
 
 **Presenting the design:**
@@ -79,3 +98,4 @@ Start by understanding the current project context, then ask questions one at a 
 - **Explore alternatives** - Always propose 2-3 approaches before settling
 - **Incremental validation** - Present design in sections, validate each
 - **Be flexible** - Go back and clarify when something doesn't make sense
+- **Ground in codebase reality** - Explore before proposing
